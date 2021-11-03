@@ -9,9 +9,16 @@ public class CharacterMovement : MonoBehaviour
     public float maxWalkSpeed = 2.0F;
     public float maxRunSpeed = 3.0F;
     public float rotateSpeed = 2.0F;
+    public float jumpForce = 2.0f;
+    public bool isGrounded;
+    public Vector3 jump = new Vector3(0.0f, 1000.0f, 0.0f);
     private Vector3 moveDirection = Vector3.zero;
     public Animator anim;
 
+    void OnCollisionStay()
+    {
+        isGrounded = true;
+    }
     // Update is called once per frame
     void FixedUpdate()
     {
@@ -29,30 +36,42 @@ public class CharacterMovement : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.LeftShift))
             {
-                if (Input.GetKey(KeyCode.Space))
+                if (Input.GetKey(KeyCode.Space) && isGrounded)
                 {
+                    rb.AddForce(jump * jumpForce, ForceMode.Impulse);
+                    isGrounded = false;
                     anim. SetInteger("state", 5);
                     Debug.Log("5");
                 }
                 else
                 {
-                    if (vel.magnitude > maxRunSpeed)
-                        rb.velocity = vel.normalized;
+                    Vector3 speedInThatDirection = new Vector3(vel.x, 0, vel.z);
+                    if (speedInThatDirection.magnitude > maxRunSpeed)
+                    {
+                        Vector3 normalizedVector = vel.normalized;
+                        rb.velocity = new Vector3(normalizedVector.x, rb.velocity.y, normalizedVector.z);
+                    }
                     anim. SetInteger("state", 2);
                     Debug.Log("2");
                 }
             }
             else
             {
-                if (Input.GetKey(KeyCode.Space))
+                if (Input.GetKey(KeyCode.Space)&& isGrounded)
                 {
+                    rb.AddForce(jump * jumpForce, ForceMode.Impulse);
+                    isGrounded = false;
                     anim. SetInteger("state", 5);
                     Debug.Log("5");
                 }
                 else
                 {
-                    if (vel.magnitude > maxWalkSpeed)
-                        rb.velocity = vel.normalized;
+                    Vector3 speedInThatDirection = new Vector3(vel.x, 0, vel.z);
+                    if (speedInThatDirection.magnitude > maxWalkSpeed)
+                    {
+                        Vector3 normalizedVector = vel.normalized;
+                        rb.velocity = new Vector3(normalizedVector.x, rb.velocity.y, normalizedVector.z);
+                    }
                     anim. SetInteger("state", 1);
                     Debug.Log("1");
                 }
@@ -63,37 +82,51 @@ public class CharacterMovement : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.LeftShift))
             {
-                if (Input.GetKey(KeyCode.Space))
+                if (Input.GetKey(KeyCode.Space) && isGrounded)
                 {
+                    rb.AddForce(jump * jumpForce, ForceMode.Impulse);
+                    isGrounded = false;
                     anim. SetInteger("state", 5);
                     Debug.Log("5");
                 }
                 else
                 {
-                    if (vel.magnitude > (maxRunSpeed/2))
-                        rb.velocity = vel.normalized;
+                    Vector3 speedInThatDirection = new Vector3(vel.x, 0, vel.z);
+                    if (speedInThatDirection.magnitude > maxRunSpeed/2)
+                    {
+                        Vector3 normalizedVector = vel.normalized;
+                        rb.velocity = new Vector3(normalizedVector.x, rb.velocity.y, normalizedVector.z);
+                    }
                     anim. SetInteger("state", 4);
                     Debug.Log("4");
                 }
             }
             else
             {
-                if (Input.GetKey(KeyCode.Space))
+                if (Input.GetKey(KeyCode.Space) && isGrounded)
                 {
+                    rb.AddForce(jump * jumpForce, ForceMode.Impulse);
+                    isGrounded = false;
                     anim. SetInteger("state", 5);
                     Debug.Log("5");
                 }
                 else
                 {
-                    if (vel.magnitude > (maxWalkSpeed/2))
-                        rb.velocity = vel.normalized;
+                    Vector3 speedInThatDirection = new Vector3(vel.x, 0, vel.z);
+                    if (speedInThatDirection.magnitude > maxWalkSpeed/2)
+                    {
+                        Vector3 normalizedVector = vel.normalized;
+                        rb.velocity = new Vector3(normalizedVector.x, rb.velocity.y, normalizedVector.z);
+                    }
                     anim. SetInteger("state", 3);
                     Debug.Log("3");
                 }
             }
         }
-        else if (Input.GetKey(KeyCode.Space))
+        else if (Input.GetKey(KeyCode.Space) && isGrounded)
         {
+            rb.AddForce(jump * jumpForce, ForceMode.Impulse);
+            isGrounded = false;
             anim. SetInteger("state", 5);
             Debug.Log("5");
         }
